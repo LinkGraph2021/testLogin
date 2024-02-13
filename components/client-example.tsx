@@ -6,7 +6,6 @@ import { Input } from "./ui/input"
 import { useState } from "react"
 import SessionData from "./session-data"
 import CustomLink from "./custom-link"
-import { authenticate } from '@/app/lib/actions'
 
 import { useFormState, useFormStatus } from 'react-dom'
 
@@ -82,13 +81,6 @@ export default function ClientExample() {
         <SessionData session={session} />
       )}
       <UpdateForm />
-
-      <form action={dispatch}>
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <div>{errorMessage && <p>{errorMessage}</p>}</div>
-        <LoginButton />
-      </form>
     </div>
   )
 }
