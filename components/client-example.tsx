@@ -6,6 +6,9 @@ import { Input } from "./ui/input"
 import { useState } from "react"
 import SessionData from "./session-data"
 import CustomLink from "./custom-link"
+import { authenticate } from '@/app/lib/actions'
+
+import { useFormState, useFormStatus } from 'react-dom'
 
 const UpdateForm = () => {
   const { data: session, update } = useSession()
@@ -43,6 +46,8 @@ const UpdateForm = () => {
 
 export default function ClientExample() {
   const { data: session, status } = useSession()
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+
   return (
     <div className="space-y-2">
       <h1 className="text-3xl font-bold">Client Side Rendering Usage</h1>
@@ -69,6 +74,7 @@ export default function ClientExample() {
         </strong>{" "}
         to provide the session data.
       </p>
+      
 
       {status === "loading" ? (
         <div>Loading...</div>
@@ -76,6 +82,23 @@ export default function ClientExample() {
         <SessionData session={session} />
       )}
       <UpdateForm />
+
+      <form action={dispatch}>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <div>{errorMessage && <p>{errorMessage}</p>}</div>
+        <LoginButton />
+      </form>
     </div>
+  )
+}
+
+function LoginButton() {
+  const { pending } = useFormStatus()
+ 
+  return (
+    <button aria-disabled={pending} type="submit">
+      Login
+    </button>
   )
 }
